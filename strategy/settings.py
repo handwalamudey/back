@@ -33,10 +33,11 @@ ALLOWED_HOSTS = [
     "127.0.0.1"
 ]
 
+# CSRF settings for your frontend domain
 CSRF_TRUSTED_ORIGINS = [
     "https://noordin.vercel.app",
+    "https://back-production-30ef.up.railway.app",
 ]
-
 
 # Application definition
 
@@ -67,6 +68,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -141,8 +143,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC FILES
+STATIC_URL = '/static/'  # keep the leading slash
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # collectstatic will put files here
+STATICFILES_DIRS = []  # optional if you have extra static dirs
+
+# Use WhiteNoise for serving static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ALLOWED_ORIGINS = [
    "https://noordin.vercel.app",
+
 ]
