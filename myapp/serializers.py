@@ -16,7 +16,7 @@ class VoterSerializer(serializers.ModelSerializer):
         queryset=PollingStation.objects.all(), 
         source='polling_station'
     )
-    pollingStationName = serializers.SerializerMethodField()
+    pollingStationName = serializers.ReadOnlyField(source='polling_station.name')
     idNumber = serializers.CharField(source='id_number')
     phoneNumber = serializers.CharField(source='phone_number', required=False, allow_null=True)
     dob = serializers.IntegerField(required=False, allow_null=True)
@@ -46,8 +46,6 @@ class VoterSerializer(serializers.ModelSerializer):
     
     supportProbability = serializers.ReadOnlyField(source='support_probability')
 
-    def get_pollingStationName(self, obj):
-        return obj.polling_station.name
 
 class MessageSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)

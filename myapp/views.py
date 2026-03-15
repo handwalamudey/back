@@ -19,7 +19,7 @@ class PollingStationViewSet(viewsets.ModelViewSet):
     permission_classes = [RoleBasedPermission]
 
 class VoterViewSet(viewsets.ModelViewSet):
-    queryset = Voter.objects.all()
+    queryset = Voter.objects.select_related('polling_station').all()
     serializer_class = VoterSerializer
     permission_classes = [RoleBasedPermission]
 
