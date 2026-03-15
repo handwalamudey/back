@@ -1,4 +1,4 @@
 #!/bin/bash
 python manage.py migrate
 python manage.py collectstatic --noinput
-gunicorn strategy.wsgi:application --bind 0.0.0.0:8000
+gunicorn BackendNoordin.wsgi:application --bind 0.0.0.0:8000
