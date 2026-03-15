@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "back-production-30ef.up.railway.app",
+    "noordin.vercel.app"
 ]
 
 
@@ -136,7 +137,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "http://localhost:8080",
+   "https://noordin.vercel.app",
 ]
