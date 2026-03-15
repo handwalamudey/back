@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -104,10 +108,10 @@ WSGI_APPLICATION = 'strategy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PGDATABASE', 'postgres'),       # fallback if env not set
-        'USER': os.getenv('PGUSER', 'postgres'),
-        'PASSWORD': os.getenv('PGPASSWORD', ''),
-        'HOST': os.getenv('PGHOST', 'localhost'),
+        'NAME': os.getenv('PGDATABASE'),   # railway
+        'USER': os.getenv('PGUSER'),       # postgres
+        'PASSWORD': os.getenv('PGPASSWORD'), # HvkNBhzOeJtMLHVDriSihFlAILMHirbu
+        'HOST': os.getenv('PGHOST'),       # postgres.railway.internal
         'PORT': os.getenv('PGPORT', '5432'),
         'OPTIONS': {
             'sslmode': 'require',  # Railway requires SSL
