@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,14 +21,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!lqi1qj*2_u#tty82tz*awbl5lvas_z==9ca#xvi^ebs9^khc6'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-!lqi1qj*2_u#tty82tz*awbl5lvas_z==9ca#xvi^ebs9^khc6')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
     "back-production-30ef.up.railway.app",
-    "noordin.vercel.app"
+    "noordin.vercel.app",
+    "localhost",
+    "127.0.0.1"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://noordin.vercel.app",
 ]
 
 
