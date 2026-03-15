@@ -1,3 +1,4 @@
+import os
 from rest_framework import viewsets, views, status, response
 from rest_framework.decorators import action
 from django.views.decorators.csrf import csrf_exempt
@@ -35,7 +36,7 @@ class VoterViewSet(viewsets.ModelViewSet):
         Upload a CSV file to create voters in bulk.
 
         Expected columns (headers, case-insensitive):
-        name,id_number,phone_number,dob,r_g,clan,polling_station_name,location,age_group,football_club,status,notes
+        name,id_number,phone_number,dob,r_g,clan,polling_station_name,location,football_club,status,notes
         """
         file = request.FILES.get('file')
         if not file:

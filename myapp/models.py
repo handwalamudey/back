@@ -42,21 +42,14 @@ class Voter(models.Model):
         ('Fai', 'Fai'),
         ('Other', 'Other'),
     ]
-    clan = models.CharField(max_length=50)
+    clan = models.CharField(max_length=50, blank=True, null=True)
     
     polling_station = models.ForeignKey(PollingStation, on_delete=models.CASCADE, related_name='voters')
-    location = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True, null=True)
     
     dob = models.IntegerField(blank=True, null=True, help_text="Year of Birth")
     r_g = models.BooleanField(default=False, verbose_name="Registered")
 
-    AGE_CHOICES = [
-        ('18-25', '18-25'),
-        ('26-35', '26-35'),
-        ('36-50', '36-50'),
-        ('50+', '50+'),
-    ]
-    age_group = models.CharField(max_length=10, choices=AGE_CHOICES)
     football_club = models.CharField(max_length=100, blank=True, null=True)
 
     # Additional demographic fields

@@ -10,6 +10,8 @@ class PollingStationSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'registeredVoters', 'zoneType']
 
 class VoterSerializer(serializers.ModelSerializer):
+    clan = serializers.CharField(max_length=50, required=False, allow_null=True, allow_blank=True)
+    location = serializers.CharField(max_length=255, required=False, allow_null=True, allow_blank=True)
     pollingStationId = serializers.PrimaryKeyRelatedField(
         queryset=PollingStation.objects.all(), 
         source='polling_station'
@@ -19,7 +21,6 @@ class VoterSerializer(serializers.ModelSerializer):
     phoneNumber = serializers.CharField(source='phone_number', required=False, allow_null=True)
     dob = serializers.IntegerField(required=False, allow_null=True)
     rG = serializers.BooleanField(source='r_g', required=False)
-    ageGroup = serializers.CharField(source='age_group')
     footballClub = serializers.CharField(source='football_club', required=False, allow_null=True)
     tribe = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     ward = serializers.CharField(required=False, allow_null=True, allow_blank=True)
@@ -35,7 +36,7 @@ class VoterSerializer(serializers.ModelSerializer):
             'id', 'name', 'idNumber', 'phoneNumber', 'clan', 
             'pollingStationId', 'pollingStationName', 'location', 
             'dob', 'rG', 'supportProbability',
-            'ageGroup', 'footballClub', 'tribe', 'ward', 'pollingCenter',
+            'footballClub', 'tribe', 'ward', 'pollingCenter',
             'stream', 'mobilizedBy',
             'status', 'notes', 'optedIn',
             'createdAt', 'updatedAt'

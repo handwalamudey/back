@@ -16,7 +16,6 @@ CSV_HEADERS = [
     "clan",
     "polling_station_name",
     "location",
-    "age_group",
     "football_club",
     "tribe",
     "ward",
@@ -99,13 +98,11 @@ def import_voters_from_csv(file) -> Tuple[int, List[str]]:
 
             name = data.get("name")
             id_number = data.get("id_number")
-            age_group = data.get("age_group")
 
             # Ultra-flexible: only skip truly empty rows (no useful info at all).
             if not any([
                 name,
                 id_number,
-                age_group,
                 data.get("phone_number"),
                 data.get("location"),
             ]):
@@ -117,22 +114,25 @@ def import_voters_from_csv(file) -> Tuple[int, List[str]]:
                 name = f"Unknown Voter {idx}"
             if not id_number:
                 id_number = f"AUTO-{idx}-{uuid.uuid4().hex[:8]}"
-            if not age_group:
-                age_group = "unspecified"
 
-            clan = data.get("clan") or "N/A"
+            clan = data.get("clan") or data.get("tribe") or "N/A"
             polling_station_name = data.get("polling_station_name") or "GENERAL"
             location = data.get("location") or "N/A"
 
+            # Use polling_center as station name if station name is missing
+            if polling_station_name == "GENERAL" and data.get("polling_center"):
+                polling_station_name = data.get("polling_center")
+
             # Get or create polling station
             station, _ = PollingStation.objects.get_or_create(
-                name=polling_station_name,
+                name=polling_station_name.strip(),
                 defaults={"registered_voters": 0, "zone_type": "swing"},
             )
 
             dob_raw = data.get("dob")
             try:
-                dob = int(dob_raw) if dob_raw else None
+                # Handle possible float strings from Excel CSV export
+                dob = int(float(dob_raw)) if dob_raw else None
             except (TypeError, ValueError):
                 dob = None
 
@@ -151,7 +151,6 @@ def import_voters_from_csv(file) -> Tuple[int, List[str]]:
                     or data.get("registered")
                     or ""
                 ),
-                age_group=age_group,
                 football_club=data.get("football_club") or None,
                 tribe=data.get("tribe") or None,
                 ward=data.get("ward") or None,
