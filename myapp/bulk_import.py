@@ -60,6 +60,8 @@ def import_voters_from_csv(file) -> Tuple[int, List[str]]:
 
     # Pre-fetch existing polling stations to minimize DB hits
     stations_cache = {s.name.strip(): s for s in PollingStation.objects.all()}
+    # Pre-fetch existing ID numbers to prevent duplicates
+    existing_ids = set(Voter.objects.values_list('id_number', flat=True))
     voters_to_create = []
 
     with transaction.atomic():
@@ -101,6 +103,14 @@ def import_voters_from_csv(file) -> Tuple[int, List[str]]:
                     name = f"Unknown Voter {idx}"
                 if not id_number:
                     id_number = f"AUTO-{idx}-{uuid.uuid4().hex[:8]}"
+                
+                # Skip if ID number already exists
+                if id_number in existing_ids:
+                    errors.append(f"Row {idx}: Voter with ID {id_number} already exists. Skipped.")
+                    continue
+                
+                # Add to existing_ids set to catch duplicates within the same CSV
+                existing_ids.add(id_number)
 
                 clan = data.get("clan") or data.get("tribe") or "N/A"
                 polling_station_name = data.get("polling_station_name") or "GENERAL"

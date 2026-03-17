@@ -107,19 +107,26 @@ WSGI_APPLICATION = 'strategy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PGDATABASE'),   # railway
-        'USER': os.getenv('PGUSER'),       # postgres
-        'PASSWORD': os.getenv('PGPASSWORD'), # HvkNBhzOeJtMLHVDriSihFlAILMHirbu
-        'HOST': os.getenv('PGHOST'),       # postgres.railway.internal
-        'PORT': os.getenv('PGPORT', '5432'),
-        'OPTIONS': {
-            'sslmode': 'require',  # Railway requires SSL
-        },
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+ DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': os.getenv('PGDATABASE'),   # railway
+         'USER': os.getenv('PGUSER'),       # postgres
+         'PASSWORD': os.getenv('PGPASSWORD'), # HvkNBhzOeJtMLHVDriSihFlAILMHirbu
+         'HOST': os.getenv('PGHOST'),       # postgres.railway.internal
+         'PORT': os.getenv('PGPORT', '5432'),
+         'OPTIONS': {
+             'sslmode': 'require',  # Railway requires SSL
+         },
+     }
+ }
 
 
 # Password validation
@@ -166,5 +173,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ALLOWED_ORIGINS = [
    "https://noordin.vercel.app",
+   "http://localhost:8080"
+
 
 ]

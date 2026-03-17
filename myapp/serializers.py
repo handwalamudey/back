@@ -46,6 +46,22 @@ class VoterSerializer(serializers.ModelSerializer):
     
     supportProbability = serializers.ReadOnlyField(source='support_probability')
 
+    def validate_idNumber(self, value):
+        """
+        Check that the ID number is unique.
+        """
+        # Get the ID of the voter being updated (if any)
+        voter_id = self.instance.id if self.instance else None
+        
+        # Look for other voters with the same ID number
+        queryset = Voter.objects.filter(id_number=value)
+        if voter_id:
+            queryset = queryset.exclude(id=voter_id)
+            
+        if queryset.exists():
+            raise serializers.ValidationError("A voter with this ID number already exists in the system.")
+        return value
+
 
 class MessageSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)

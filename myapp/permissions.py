@@ -35,7 +35,8 @@ class RoleBasedPermission(permissions.BasePermission):
             
         if user.role == 'staff':
             # Staff might only have GET permissions for certain views
-            if request.method in permissions.SAFE_METHODS:
+            # Allowing POST and PATCH for voter updates/creation as requested
+            if request.method in permissions.SAFE_METHODS or request.method in ['POST', 'PATCH']:
                 return True
             return False
             
